@@ -1,0 +1,24 @@
+{
+  "name": "delivery-record",
+  "version": "1.0.0",
+  "description": "Schema-typed, human-signed Delivery Records for AI-assisted work. Generate a record for any significant output (code PR, FRD, audit, discovery, design handoff, strategy, client comms, QA, launch, deployment, devops, project setup, ongoing improvement) with a mandatory named-reviewer checkpoint, then verify records against the bundled JSON Schema spec with the threshold rule (fail needs a waiver, n/a needs a justification).",
+  "author": {
+    "name": "Kanopi Studios",
+    "email": "code@kanopi.com",
+    "url": "https://kanopi.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agent-skills",
+    "delivery-record",
+    "ai-governance",
+    "provenance",
+    "attestation",
+    "human-in-the-loop",
+    "json-schema",
+    "kanopi"
+  ],
+  "repository": "https://github.com/kanopi/delivery-record",
+  "homepage": "https://github.com/kanopi/delivery-record"
+}

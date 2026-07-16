@@ -1,0 +1,22 @@
+{
+  "name": "delivery-record",
+  "version": "1.0.0",
+  "description": "Schema-typed, human-signed Delivery Records for AI-assisted work. Works in Claude Code, Claude Desktop, and OpenAI Codex.",
+  "author": {
+    "name": "Kanopi Studios",
+    "email": "code@kanopi.com",
+    "url": "https://kanopi.com"
+  },
+  "homepage": "https://github.com/kanopi/delivery-record",
+  "repository": "https://github.com/kanopi/delivery-record",
+  "license": "MIT",
+  "keywords": ["delivery-record", "ai-governance", "provenance", "attestation", "codex"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Delivery Record",
+    "shortDescription": "Generate and verify human-signed Delivery Records for AI-assisted work",
+    "developerName": "Kanopi Studios",
+    "category": "Development",
+    "websiteURL": "https://github.com/kanopi/delivery-record"
+  }
+}

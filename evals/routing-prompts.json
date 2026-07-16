@@ -1,0 +1,33 @@
+{
+  "$comment": "Routing eval cases for scripts/run-evals.js. Each case is a realistic user prompt plus the skill that should win the TF-IDF ranking against every skill description in this repo. CI enforces a rank-1 floor (see .github/workflows/test.yml).",
+  "prompts": [
+    {
+      "prompt": "create a delivery record for this PR before we merge it",
+      "expect": "delivery-record"
+    },
+    {
+      "prompt": "generate the delivery record for the accessibility audit report we just finished",
+      "expect": "delivery-record"
+    },
+    {
+      "prompt": "I need the human sign-off artifact for this AI-assisted FRD — write it up and index it in Teamwork",
+      "expect": "delivery-record"
+    },
+    {
+      "prompt": "document this launch as a delivery record with the reviewer checkpoint",
+      "expect": "delivery-record"
+    },
+    {
+      "prompt": "verify docs/delivery-records/PR-456-breadcrumb.md against the schema",
+      "expect": "delivery-record-verify"
+    },
+    {
+      "prompt": "validate all the delivery records in this repo and treat warnings as failures",
+      "expect": "delivery-record-verify"
+    },
+    {
+      "prompt": "run the strict validation pass on our existing delivery record files",
+      "expect": "delivery-record-verify"
+    }
+  ]
+}
