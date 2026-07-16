@@ -154,7 +154,7 @@ skip_without_agents() {
     skill_file="${skill_dir}SKILL.md"
 
     if [ -f "$skill_file" ]; then
-      skill_name=$(sed -n 's/^name: *//p' "$skill_file")
+      skill_name=$(sed -n 's/^name: *//p' "$skill_file" | head -n 1)
       if [ "$skill_name" != "$dir_name" ]; then
         echo "Name mismatch in $skill_file: name=$skill_name, dir=$dir_name"
         return 1
@@ -252,7 +252,7 @@ skip_without_agents() {
     agent_file="${agent_dir}AGENT.md"
 
     if [ -f "$agent_file" ]; then
-      agent_name=$(sed -n 's/^name: *//p' "$agent_file")
+      agent_name=$(sed -n 's/^name: *//p' "$agent_file" | head -n 1)
       if [ "$agent_name" != "$dir_name" ]; then
         echo "Name mismatch in $agent_file: name=$agent_name, dir=$dir_name"
         return 1
