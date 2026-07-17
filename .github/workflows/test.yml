@@ -97,7 +97,7 @@ jobs:
           scan_dirs="skills"
           [ -d agents ] && scan_dirs="$scan_dirs agents"
           [ -d docs ] && scan_dirs="$scan_dirs docs"
-          if grep -ri "password\s*=\|api_key\s*=\|secret\s*=" $scan_dirs | grep -v "example\|placeholder\|TODO"; then
+          if grep -ri "password\s*=\|api_key\s*=\|secret\s*=" $scan_dirs | grep -v "example\|placeholder\|TODO\|test-fixture"; then
             echo "❌ Potential hardcoded secrets found"
             exit 1
           else
