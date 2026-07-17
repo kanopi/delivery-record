@@ -31,17 +31,18 @@ to exist without a named reviewer and two non-generic checkpoint notes.
 
 ## Install
 
-**Claude Code:**
+**Claude Code (via the Kanopi marketplace):**
 
-```bash
-claude plugins install delivery-record@kanopi
+```
+/plugin marketplace add kanopi/claude-toolbox
+/plugin install delivery-record@claude-toolbox
 ```
 
-Or clone and symlink:
+**Local development:**
 
 ```bash
 git clone https://github.com/kanopi/delivery-record
-ln -s $(pwd)/delivery-record ~/.config/claude/plugins/delivery-record
+claude --plugin-dir /path/to/delivery-record
 ```
 
 **Claude Desktop:** download the plugin zip or individual `.skill` files from
