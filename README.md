@@ -4,6 +4,7 @@ A **Delivery Record** is a schema-typed, human-signed markdown file that
 documents one significant AI-assisted output — what was produced, what checks
 ran, and **which named human reviewed it and what they actually verified**.
 This repo ships the spec and two Agent Skills that write and verify records.
+The spec is browsable at <https://kanopi.github.io/delivery-record/spec/v1>.
 
 AI can draft almost anything; accountability can't be delegated to it. The
 record is the artifact that proves a human stood behind the work: it refuses

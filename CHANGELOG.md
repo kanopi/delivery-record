@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- GitHub Pages spec site: the canonical `predicate_type` URI
+  (<https://kanopi.github.io/delivery-record/spec/v1>) now dereferences.
+  `spec/` is served verbatim, so `schema.json` and every `checks/*.json`
+  resolve at their `$id` URLs; READMEs render as index pages
+  (`scripts/build-site.py` + `.github/workflows/docs.yml`).
+
 ## [1.0.0] - 2026-07-16
 
 ### Added

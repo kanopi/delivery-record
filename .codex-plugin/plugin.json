@@ -7,16 +7,22 @@
     "email": "code@kanopi.com",
     "url": "https://kanopi.com"
   },
-  "homepage": "https://github.com/kanopi/delivery-record",
+  "homepage": "https://kanopi.github.io/delivery-record/",
   "repository": "https://github.com/kanopi/delivery-record",
   "license": "MIT",
-  "keywords": ["delivery-record", "ai-governance", "provenance", "attestation", "codex"],
+  "keywords": [
+    "delivery-record",
+    "ai-governance",
+    "provenance",
+    "attestation",
+    "codex"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Delivery Record",
     "shortDescription": "Generate and verify human-signed Delivery Records for AI-assisted work",
     "developerName": "Kanopi Studios",
     "category": "Development",
-    "websiteURL": "https://github.com/kanopi/delivery-record"
+    "websiteURL": "https://kanopi.github.io/delivery-record/"
   }
 }

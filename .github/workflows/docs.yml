@@ -1,0 +1,66 @@
+name: Deploy Spec Site
+
+# Publishes the GitHub Pages site so the canonical predicate_type URI
+# dereferences: https://kanopi.github.io/delivery-record/spec/v1
+# spec/ is served verbatim (schema.json and checks/*.json resolve at
+# their $id URLs); READMEs are rendered as index pages.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'spec/**'
+      - 'README.md'
+      - 'MIGRATION.md'
+      - 'CHANGELOG.md'
+      - 'LICENSE.md'
+      - 'scripts/build-site.py'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install renderer
+        run: pip install markdown
+
+      - name: Build site
+        run: python3 scripts/build-site.py
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
