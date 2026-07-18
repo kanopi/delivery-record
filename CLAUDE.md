@@ -30,9 +30,9 @@ see MIGRATION.md.
 ## Cross-repo references
 
 `pr-create`, `commit-message-generator`, and `teamwork-integrator` mentioned
-in skill prose live in other Kanopi plugins (cms-cultivator, pm-skills).
-These are soft prose references only — never add a hard `Task()` dependency
-across repos.
+in skill prose live in other Kanopi plugins (cms-cultivator and internal
+Kanopi libraries). These are soft prose references only — never add a hard
+`Task()` dependency across repos.
 
 ## Verification quartet (run before any commit)
 
