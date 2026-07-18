@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for a record with an unjustified `n/a`. Two fixtures in `evals/fixtures/`.
   Static `--check` validation runs in the bats suite; API-calling runs are
   local/scheduled only.
+- `.github/workflows/behavioral-evals.yml` (synced from the template's
+  v1.1.0): smoke subset on `workflow_dispatch` (full-suite option) and a
+  weekly schedule, authenticated via the `ANTHROPIC_API_KEY` secret.
+  Never runs per-push.
 - GitHub Pages spec site: the canonical `predicate_type` URI
   (<https://kanopi.github.io/delivery-record/spec/v1>) now dereferences.
   `spec/` is served verbatim, so `schema.json` and every `checks/*.json`
