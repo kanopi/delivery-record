@@ -5,9 +5,21 @@
   "prompt": "Write a delivery record for merged PR #12 (fix: correct breadcrumb links on article pages), activity type code, scope fix. Reviewer: @thejimbirch. Checkpoint 1 note: LGTM. Checkpoint 2 note: looks good.",
   "max_turns": 20,
   "smoke": true,
-  "allowed_tools_extra": ["Write", "Bash(python3:*)"],
+  "allowed_tools_extra": [
+    "Write",
+    "Bash(python3:*)"
+  ],
   "expectations": [
-    { "type": "file_not_created", "pattern": "docs/delivery-records/*.md" },
-    { "type": "output_matches", "pattern": "(?i)(beyond the automated gates|actually looked at|generic)" }
+    {
+      "type": "file_not_created",
+      "pattern": "docs/delivery-records/*.md"
+    },
+    {
+      "type": "output_matches",
+      "pattern": "(?i)(beyond the automated gates|actually looked at|generic)"
+    }
+  ],
+  "cant": [
+    "CANT-12"
   ]
 }

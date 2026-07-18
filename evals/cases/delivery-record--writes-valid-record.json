@@ -5,11 +5,30 @@
   "prompt": "Write a delivery record for merged PR #12, title 'fix: correct breadcrumb links on article pages', activity type code, scope fix, model claude-haiku-4-5, skills used: pr-create. Checks: phpcs pass, phpstan pass, unit tests pass with CI run https://example.com/ci/123, a11y n/a (breadcrumb markup unchanged, aria-current untouched), performance n/a (no query or asset changes), security pass, code review approved by @thejimbirch, qa pass. Reviewer: @thejimbirch 2026-07-18. Checkpoint 1 (plan approval): approved the plan to fix trailing-slash handling in the breadcrumb builder before implementation, scoped to article pages only. Checkpoint 2 (final approval): reviewed the diff line by line, manually tested breadcrumbs on three article pages including the nested-category edge case, and confirmed no template overrides were touched.",
   "max_turns": 20,
   "smoke": true,
-  "allowed_tools_extra": ["Write", "Bash(python3:*)", "Bash(mkdir:*)"],
+  "allowed_tools_extra": [
+    "Write",
+    "Bash(python3:*)",
+    "Bash(mkdir:*)"
+  ],
   "post_check": "python3 \"$REPO_ROOT/scripts/delivery_record_verify.py\" --strict docs/delivery-records/*.md",
   "expectations": [
-    { "type": "file_created", "pattern": "docs/delivery-records/PR-12-*.md" },
-    { "type": "file_matches", "path": "docs/delivery-records/PR-12-*.md", "pattern": "reviewed_by:.*@thejimbirch" },
-    { "type": "file_matches", "path": "docs/delivery-records/PR-12-*.md", "pattern": "(?s)Checkpoint 1.*Checkpoint 2" }
+    {
+      "type": "file_created",
+      "pattern": "docs/delivery-records/PR-12-*.md"
+    },
+    {
+      "type": "file_matches",
+      "path": "docs/delivery-records/PR-12-*.md",
+      "pattern": "reviewed_by:.*@thejimbirch"
+    },
+    {
+      "type": "file_matches",
+      "path": "docs/delivery-records/PR-12-*.md",
+      "pattern": "(?s)Checkpoint 1.*Checkpoint 2"
+    }
+  ],
+  "cant": [
+    "CANT-20",
+    "CANT-24"
   ]
 }
