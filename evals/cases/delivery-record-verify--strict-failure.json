@@ -1,0 +1,13 @@
+{
+  "name": "delivery-record-verify--strict-failure",
+  "skill": "delivery-record-verify",
+  "fixture": "repo-with-bad-record",
+  "prompt": "Verify docs/delivery-records/PR-7-example.md with --strict.",
+  "max_turns": 12,
+  "smoke": true,
+  "allowed_tools_extra": ["Bash(python3:*)"],
+  "expectations": [
+    { "type": "output_matches", "pattern": "(?i)fail" },
+    { "type": "output_matches", "pattern": "(?i)justification" }
+  ]
+}

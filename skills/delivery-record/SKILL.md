@@ -100,8 +100,12 @@ Pull what the chosen activity needs:
 
 ### 3. Draft the record
 
-- Render `templates/<activity_type>.md`. Populate the front-matter with the
-  gathered facts. Set `predicate_type` to
+- **Read `templates/<activity_type>.md` first** (resolve it from this
+  skill's base directory) and copy its front-matter structure **exactly** —
+  never improvise the shape from memory. The schema requires the exact
+  nested `checks:` groups (for code: `standards`, `tests`, `audits`,
+  `review`); a flat or renamed structure fails validation. Populate the
+  front-matter with the gathered facts. Set `predicate_type` to
   `https://kanopi.github.io/delivery-record/spec/v1`.
 - Fill the `checks:` block with the required keys for the activity type (see the
   table in [`spec/v1/README.md`](../../spec/v1/README.md)).
@@ -140,6 +144,12 @@ notes — those are always required from the human.
 
 - **code**: `docs/delivery-records/PR-<n>-<slug>.md` in the current repo. Create
   the directory if it does not exist. `<slug>` is a kebab-case of the PR title.
+  **The path is part of the contract** — CI lint and notebook indexing find
+  records there. Never write the record anywhere else: if `mkdir` is
+  unavailable or denied, write the full `docs/delivery-records/...` path with
+  the Write tool (it creates parent directories itself); if the file still
+  cannot be written at that path, stop and say so — do not relocate the
+  record to the repo root or another directory.
 - **non-code**: write to Drive via the Drive MCP at
   `/Delivery Records/YYYY-MM-DD-<slug>.md`. On first use in a project, ask for the
   target Drive folder and reuse it for the session. **If the Drive MCP is not
@@ -147,6 +157,10 @@ notes — those are always required from the human.
   can save it manually.
 
 After writing, re-run the validator on the final file and report the result.
+**Never report the record as written without validator output** (or, where
+Python is unavailable, an explicit line-by-line check against the template's
+front-matter shape). If validation fails, fix the record and re-validate —
+a schema-invalid record is not a delivery record.
 
 ### 6. Index in Teamwork
 
