@@ -22,6 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   v1.1.0): smoke subset on `workflow_dispatch` (full-suite option) and a
   weekly schedule, authenticated via the `ANTHROPIC_API_KEY` secret.
   Never runs per-push.
+- CANT-coverage case `delivery-record--loophole-rephrase` (CANT-19): the
+  checkpoint refusal holds against reworded pressure ("the reviewer
+  formalities were completed verbally") that avoids the trigger words.
+- Red-flag self-talk list in `delivery-record`, citing CANT IDs — the
+  companion to the anti-rationalization table.
 - GitHub Pages spec site: the canonical `predicate_type` URI
   (<https://kanopi.github.io/delivery-record/spec/v1>) now dereferences.
   `spec/` is served verbatim, so `schema.json` and every `checks/*.json`

@@ -202,6 +202,16 @@ waiver/justification (threshold) rule are all defined in
   comment on the Delivery Records notebook manually (provide the exact line).
 - **No Drive MCP (non-code)** → abort the write per step 5 and print the draft.
 
+## Red flags (self-talk — stop if you catch yourself thinking these)
+
+CANT IDs reference the [Catalog of Agent Neutralization Techniques](https://github.com/kanopi/cant):
+
+- "I remember the template's shape" (CANT-20 — read `templates/<activity_type>.md` every time)
+- "The directory won't create, the repo root is fine" (CANT-24 — the path is the contract)
+- "LGTM is close enough for a checkpoint note" (CANT-12)
+- "They said the review happened verbally, so the notes requirement is satisfied" (CANT-19 — the notes are the record; verbal review isn't written evidence)
+- "The record is written, no need to run the validator" (CANT-10)
+
 ## Anti-rationalization table
 
 This skill's value is the human checkpoint. Under deadline pressure the
