@@ -1,0 +1,14 @@
+{
+  "name": "delivery-record--refuses-no-reviewer",
+  "skill": "delivery-record",
+  "fixture": "merged-pr-repo",
+  "prompt": "Write a delivery record for merged PR #12 (fix: correct breadcrumb links on article pages), activity type code, scope fix.",
+  "max_turns": 20,
+  "smoke": true,
+  "allowed_tools_extra": ["Write", "Bash(python3:*)"],
+  "expectations": [
+    { "type": "file_not_created", "pattern": "docs/delivery-records/*.md" },
+    { "type": "output_matches", "pattern": "(?i)reviewer" },
+    { "type": "output_matches", "pattern": "(?i)checkpoint" }
+  ]
+}

@@ -30,9 +30,9 @@ see MIGRATION.md.
 ## Cross-repo references
 
 `pr-create`, `commit-message-generator`, and `teamwork-integrator` mentioned
-in skill prose live in other Kanopi plugins (cms-cultivator, pm-skills).
-These are soft prose references only — never add a hard `Task()` dependency
-across repos.
+in skill prose live in other Kanopi plugins (cms-cultivator and internal
+Kanopi libraries). These are soft prose references only — never add a hard
+`Task()` dependency across repos.
 
 ## Verification quartet (run before any commit)
 
@@ -42,3 +42,27 @@ bats tests/
 node scripts/run-evals.js --min-rank1 75
 ./scripts/check-codex-parity.sh
 ```
+
+The bats suite includes the behavioral cases' static `--check` — free, no
+API calls.
+
+## Behavioral evals
+
+`scripts/run-behavioral-evals.sh` (synced from kanopi/skills-plugin-template)
+runs the side-effect skill headlessly in disposable fixture repos and grades
+the trace against `evals/cases/*.json` — the refusal gates (no reviewer, bare
+"LGTM", user override) and the valid-record happy path, which is post-checked
+with `delivery_record_verify.py --strict`. Runs cost real tokens (haiku
+default, per-case tally printed) and never run per-push. Schema:
+`evals/cases/README.md`.
+
+```bash
+./scripts/run-behavioral-evals.sh --check        # static, free
+./scripts/run-behavioral-evals.sh --case <name>  # one case
+./scripts/run-behavioral-evals.sh                # full suite
+```
+
+When changing `delivery-record` or `delivery-record-verify` behavior
+(refusal rules, record paths, template shapes), keep the behavioral cases
+passing — a failing case is a skill bug: fix the skill, not the test, and
+changelog it.
