@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Per-push CI moved from GitHub Actions to CircleCI to cut GitHub Actions
+  minute spend. The six jobs in `.github/workflows/test.yml` (removed) are
+  consolidated into two CircleCI jobs in `.circleci/config.yml`:
+  `tests-and-validation` (BATS, frontmatter, Codex parity, security scan,
+  JSON validation) and `routing-evals`. Both run on the `small` resource
+  class.
+- Still on GitHub Actions deliberately: `docs.yml` (GitHub Pages OIDC
+  deploy only works from Actions, and it is path-filtered),
+  `behavioral-evals.yml` (weekly schedule plus manual dispatch only), and
+  `release-artifacts.yml` (per-release, uses the built-in `GITHUB_TOKEN`).
+
 ### Added
 
 - Behavioral eval harness (`scripts/run-behavioral-evals.sh`, synced from
