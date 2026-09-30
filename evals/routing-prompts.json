@@ -10,7 +10,7 @@
       "expect": "delivery-record"
     },
     {
-      "prompt": "I need the human sign-off artifact for this AI-assisted FRD — write it up and index it in Teamwork",
+      "prompt": "I need the human sign-off artifact for this AI-assisted FRD \u2014 write it up and index it in Teamwork",
       "expect": "delivery-record"
     },
     {
@@ -28,6 +28,22 @@
     {
       "prompt": "run the strict validation pass on our existing delivery record files",
       "expect": "delivery-record-verify"
+    },
+    {
+      "prompt": "draft an unsigned delivery record for this PR so my reviewer can read it before they sign",
+      "expect": "delivery-record-draft"
+    },
+    {
+      "prompt": "I have not had a review yet, write the delivery record draft with the reviewer left blank",
+      "expect": "delivery-record-draft"
+    },
+    {
+      "prompt": "finalize the delivery record draft now that my reviewer approved the PR and add the sign-off",
+      "expect": "delivery-record-finalize"
+    },
+    {
+      "prompt": "sign the drafted delivery record with the reviewer name and checkpoint notes",
+      "expect": "delivery-record-finalize"
     }
   ]
 }

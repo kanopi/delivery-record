@@ -20,3 +20,16 @@ schema version from `predicate_type`, enforces required fields and the
 per-activity checks policy, and applies the threshold rule (fail needs a
 waiver, n/a needs a justification) as soft warnings or hard failures with
 `--strict`.
+
+### 3. delivery-record-draft
+
+Write an unsigned Delivery Record so a reviewer can read it. Leaves
+`reviewed_by` and both checkpoint notes blank, marks the file as awaiting
+review, and does not commit, push, or post to Teamwork. The record fails
+verification until finalized.
+
+### 4. delivery-record-finalize
+
+Sign a drafted Delivery Record after review. Refuses to write without a
+named reviewer and both checkpoint notes, edits only the sign-off and
+checkpoint sections, and validates the result with `--strict`.

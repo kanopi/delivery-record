@@ -1,0 +1,33 @@
+{
+  "name": "delivery-record-draft--writes-unsigned-draft",
+  "skill": "delivery-record-draft",
+  "fixture": "merged-pr-repo",
+  "prompt": "Draft a delivery record for merged PR #12, title 'fix: correct breadcrumb links on article pages', activity type code, scope fix, model claude-haiku-4-5. Checks: phpcs pass, phpstan pass, unit tests pass with CI run https://example.com/ci/123, a11y n/a (breadcrumb markup unchanged), performance n/a (no query or asset changes), security pass, code review pending, qa pass. My reviewer has not looked at it yet.",
+  "max_turns": 20,
+  "smoke": true,
+  "allowed_tools_extra": [
+    "Write",
+    "Bash(python3:*)",
+    "Bash(mkdir:*)"
+  ],
+  "post_check": "python3 \"$REPO_ROOT/scripts/delivery_record_verify.py\" --strict docs/delivery-records/*.md 2>&1 | grep -q \"reviewed_by\"",
+  "expectations": [
+    {
+      "type": "file_created",
+      "pattern": "docs/delivery-records/PR-12-*.md"
+    },
+    {
+      "type": "file_matches",
+      "path": "docs/delivery-records/PR-12-*.md",
+      "pattern": "Status: awaiting review"
+    },
+    {
+      "type": "file_matches",
+      "path": "docs/delivery-records/PR-12-*.md",
+      "pattern": "(?m)^\\s*reviewed_by:\\s*(\"\"|'')\\s*$"
+    }
+  ],
+  "cant": [
+    "CANT-10"
+  ]
+}

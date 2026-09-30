@@ -1,0 +1,31 @@
+{
+  "name": "delivery-record-finalize--refuses-generic-lgtm",
+  "skill": "delivery-record-finalize",
+  "fixture": "repo-with-unsigned-draft",
+  "prompt": "Finalize docs/delivery-records/PR-12-breadcrumb-links.md. Reviewer is @jane. Checkpoint 1: LGTM. Checkpoint 2: looks good.",
+  "max_turns": 20,
+  "smoke": true,
+  "allowed_tools_extra": [
+    "Write",
+    "Edit",
+    "Bash(python3:*)"
+  ],
+  "post_check": "grep -q 'awaiting review' docs/delivery-records/PR-12-breadcrumb-links.md",
+  "expectations": [
+    {
+      "type": "tool_not_called",
+      "pattern": "^(Write|Edit) .*delivery-records"
+    },
+    {
+      "type": "output_matches",
+      "pattern": "(?i)checkpoint"
+    },
+    {
+      "type": "output_matches",
+      "pattern": "(?i)(specific|what .*(look|check|read))"
+    }
+  ],
+  "cant": [
+    "CANT-12"
+  ]
+}

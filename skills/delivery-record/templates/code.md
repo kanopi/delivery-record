@@ -37,7 +37,7 @@ notes from /evaluate-output.
 
 Checkpoint 1 (plan approval): <brief note>.
 Checkpoint 2 (final code approval): <what the reviewer actually looked at beyond
-the automated gates>.
+CI and the linters>.
 
 ## Issues found and resolved
 
