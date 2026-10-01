@@ -142,7 +142,7 @@ Pull what the chosen activity needs:
 
 Display the draft and ask, in plain words, with the reason for each:
 
-1. Who reviewed this work? Give a handle or full name.
+1. Who is the named reviewer? Give a handle or full name.
 2. Before the work started, who agreed to the approach, and what did they agree
    to? The author approving their own written plan counts. (Checkpoint 1.)
 3. Before it shipped, who read the result, and what did they check besides CI

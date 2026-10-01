@@ -44,7 +44,7 @@ In that case the record is already signed: say so, and do not overwrite a signat
 
 Ask in plain words, with the reason for each, in one question set:
 
-1. Who reviewed this work? Give a handle or full name.
+1. Who is the named reviewer? Give a handle or full name.
 2. Before the work started, who agreed to the approach, and what did they agree to?
    This can be the author approving their own plan, if it was written down somewhere.
 3. Before it shipped, who read the result, and what did they check besides CI and the linters?
