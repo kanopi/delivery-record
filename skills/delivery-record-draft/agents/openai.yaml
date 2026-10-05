@@ -1,0 +1,5 @@
+policy:
+  allow_implicit_invocation: false
+interface:
+  display_name: "CMS Cultivator: Delivery Record Draft"
+  short_description: "Draft an unsigned Delivery Record so a reviewer can read it. Leaves the reviewer and checkpoint notes blank and does not commit, push, or post to Teamwork."

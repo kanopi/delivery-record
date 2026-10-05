@@ -1,0 +1,33 @@
+{
+  "name": "delivery-record-finalize--signs-valid-draft",
+  "skill": "delivery-record-finalize",
+  "fixture": "repo-with-unsigned-draft",
+  "prompt": "Finalize docs/delivery-records/PR-12-breadcrumb-links.md. Reviewer: @jane 2026-09-30. Checkpoint 1 (plan approval): @jane agreed in the ticket to fix trailing-slash handling in the breadcrumb builder only, scoped to article pages. Checkpoint 2 (final approval): @jane read the full diff in src/breadcrumb.php, loaded three article pages including the nested-category case to confirm the last crumb, and confirmed no template overrides changed.",
+  "max_turns": 20,
+  "smoke": true,
+  "allowed_tools_extra": [
+    "Write",
+    "Edit",
+    "Bash(python3:*)"
+  ],
+  "post_check": "python3 \"$REPO_ROOT/scripts/delivery_record_verify.py\" --strict docs/delivery-records/*.md && ! grep -q 'awaiting review' docs/delivery-records/PR-12-breadcrumb-links.md",
+  "expectations": [
+    {
+      "type": "file_matches",
+      "path": "docs/delivery-records/PR-12-breadcrumb-links.md",
+      "pattern": "reviewed_by:.*@jane"
+    },
+    {
+      "type": "file_matches",
+      "path": "docs/delivery-records/PR-12-breadcrumb-links.md",
+      "pattern": "(?s)Checkpoint 1.*src/breadcrumb\\.php"
+    },
+    {
+      "type": "tool_not_called",
+      "pattern": "git (commit|push)"
+    }
+  ],
+  "cant": [
+    "CANT-10"
+  ]
+}

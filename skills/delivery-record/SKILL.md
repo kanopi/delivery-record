@@ -29,10 +29,17 @@ and ran through Kanopi's workflow. The schema is canonical in this repo at
   client's Drive (non-code).
 - Posts an index comment on the project's "Delivery Records" Teamwork notebook
   (and, with your confirmation, creates that notebook if it is missing).
-- For code records, amends the open PR description with a link to the record.
+- For code records, amends the open PR description with a link to the record,
+  only when you ask for it (step 7).
+
+It never commits or pushes. Those stay with you.
 
 **The human checkpoint is mandatory.** This skill **refuses to write the file**
 without a named reviewer and both checkpoint notes (see step 4).
+
+**No review yet?** Use `delivery-record-draft` to write an unsigned record a
+reviewer can read, then `delivery-record-finalize` once the review has
+happened.
 
 ## When a record is required
 
@@ -56,6 +63,7 @@ or brainstorming.
 - `--pr <n>` — override PR detection
 - `--ticket <key>` — set `ticket:` explicitly
 - `--scope <feature|fix|chore|milestone|launch|deliverable>` — set scope
+  (optional; leave it out if none fits, see step 3)
 - `--reviewer <handle>` — pre-fill `reviewed_by` (still validated against blank checkpoint notes)
 
 ## Workflow
@@ -107,6 +115,12 @@ Pull what the chosen activity needs:
   `review`); a flat or renamed structure fails validation. Populate the
   front-matter with the gathered facts. Set `predicate_type` to
   `https://kanopi.github.io/delivery-record/spec/v1`.
+- **Scope is optional.** It labels the kind of work so records can be filtered
+  later: `feature` (new behavior), `fix` (bug fix), `chore` (maintenance, no
+  behavior change), `milestone` (a planned project phase), `launch` (a site
+  going live), `deliverable` (something handed to the client). When the user
+  gives none, omit `scope` from the front matter. When asking, list all six with
+  these meanings. Never accept a value outside the list.
 - Fill the `checks:` block with the required keys for the activity type (see the
   table in [`spec/v1/README.md`](../../spec/v1/README.md)).
   Use `pass` / `fail` / `n/a` for statuses and evidence strings (CI URLs, reviewer
@@ -126,14 +140,20 @@ Pull what the chosen activity needs:
 
 ### 4. Require the human checkpoint (the curl rule)
 
-Display the draft and explicitly prompt:
+Display the draft and ask, in plain words, with the reason for each:
 
-> **Who is the named reviewer? Paste the Checkpoint 1 (plan approval) and
-> Checkpoint 2 (final approval) notes.**
+1. Who is the named reviewer? Give a handle or full name.
+2. Before the work started, who agreed to the approach, and what did they agree
+   to? The author approving their own written plan counts. (Checkpoint 1.)
+3. Before it shipped, who read the result, and what did they check besides CI
+   and the linters? Name the files, pages, or behaviors. (Checkpoint 2.)
+
+If the review has not happened yet, stop and point the user to
+`delivery-record-draft`. Do not ask the user to invent notes.
 
 **Refuse to proceed** if either checkpoint note is blank or generic. A bare
 "LGTM", "looks good", or an empty line **fails** — Checkpoint 2 must say what the
-reviewer actually looked at beyond the automated gates. Re-prompt up to twice; on
+reviewer actually looked at beyond CI and the linters. Re-prompt up to twice; on
 the third blank/generic input, **abort** with a clear message and do not write the
 file.
 
@@ -179,7 +199,8 @@ a schema-invalid record is not a delivery record.
 
 ### 7. For code records: link from the PR
 
-Amend the PR description with a trailer so reviewers can find the record:
+Only when the user asks, amend the PR description with a trailer so reviewers
+can find the record. Otherwise print the line and the `gh pr edit` command:
 
 ```
 Delivery Record: docs/delivery-records/PR-<n>-<slug>.md
@@ -220,7 +241,7 @@ temptation is to weaken it — don't:
 | Pressure / rationalization | Correct behavior |
 |---|---|
 | "The reviewer is busy — just put their name in and they'll confirm later" | Refuse. `reviewed_by` without real checkpoint notes is a forged signature. |
-| "LGTM is close enough for Checkpoint 2" | Refuse. The note must say what the reviewer actually looked at beyond the automated gates. |
+| "LGTM is close enough for Checkpoint 2" | Refuse. The note must say what the reviewer actually looked at beyond CI and the linters. |
 | "Skip the record this once, the PR is tiny" | If the output is client-facing or load-bearing, the record is required regardless of size. Say so and offer to run it. |
 | "Fill the checks block optimistically — CI will probably pass" | Only record check results that actually ran. Unknown ≠ `pass`; use the real status or wait. |
 | "Mark unrun audits `n/a` to get to green" | `n/a` means *not applicable*, not *not done*. An applicable-but-skipped check is a `fail` that needs a waiver. |
@@ -228,6 +249,8 @@ temptation is to weaken it — don't:
 
 ## Related skills
 
+- **delivery-record-draft** — write an unsigned record before review.
+- **delivery-record-finalize** — sign a draft after review.
 - **delivery-record-verify** — validate a record against the schema and the
   threshold rule.
 

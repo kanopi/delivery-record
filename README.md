@@ -22,6 +22,13 @@ to exist without a named reviewer and two non-generic checkpoint notes.
   type, gathers facts (PR metadata, CI status, report paths), renders the
   matching template, enforces the human checkpoint, writes the file, and
   indexes it in the project's Teamwork "Delivery Records" notebook.
+- **`skills/delivery-record-draft/`** — writes an unsigned record so a
+  reviewer can read it. Leaves the reviewer and checkpoint notes blank, and
+  does not commit, push, or post to Teamwork. The draft fails verification on
+  purpose until it is finalized.
+- **`skills/delivery-record-finalize/`** — signs a draft after a human has
+  reviewed the work. Refuses without a named reviewer and two specific
+  checkpoint notes.
 - **`skills/delivery-record-verify/`** — the read-only verification skill.
 - **`scripts/delivery_record_verify.py`** — the validator both skills and CI
   use: resolves the schema version from `predicate_type`, validates the
@@ -52,8 +59,13 @@ the latest GitHub release and upload via Settings.
 
 ```
 /delivery-record [--activity-type <type>] [--pr <n>] [--ticket <key>] [--reviewer <handle>]
+/delivery-record-draft [--activity-type <type>] [--pr <n>] [--ticket <key>]
+/delivery-record-finalize [path] [--reviewer <handle>]
 /delivery-record-verify [path] [--strict]
 ```
+
+Use `/delivery-record` when the review has already happened.
+Use `/delivery-record-draft` when it has not, then `/delivery-record-finalize` after the reviewer signs off.
 
 Or conversationally: "create a delivery record for this PR", "validate all
 the delivery records".

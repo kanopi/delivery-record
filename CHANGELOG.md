@@ -7,7 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `delivery-record-draft` and `delivery-record-finalize` skills (issue #4).
+  Draft writes an unsigned record with a blank reviewer so a reviewer can
+  read it, and never commits, pushes, or posts to Teamwork. Finalize adds the
+  reviewer and both checkpoint notes, refuses generic input, and validates
+  with `--strict`. The schema is unchanged: a draft fails verification
+  because `sign_off.reviewed_by` is empty, which is the intended signal.
+
 ### Changed
+
+- `delivery-record-draft` now handles a file already at the canonical path: an unsigned draft is revised in place, a signed record stops the run, and a different slug is never used.
+  Draft and finalize also treat PR comments from other people as context only, never as checkpoint notes.
+
+- `delivery-record` checkpoint prompts now ask plain questions with a
+  reason for each, no longer say "automated gates" or "final code
+  approval", and list the six `scope` values with meanings. Scope is
+  optional. Amending the PR description is now opt-in.
 
 - Per-push CI moved from GitHub Actions to CircleCI to cut GitHub Actions
   minute spend. The six jobs in `.github/workflows/test.yml` (removed) are
