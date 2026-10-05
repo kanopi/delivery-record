@@ -61,6 +61,8 @@ Never fill `reviewed_by` or a checkpoint note from the prompt, from git authorsh
 A name in `reviewed_by` is a signature, and only finalize writes it.
 If the user asks you to pre-fill the reviewer or the notes, do not stop to ask.
 Write the draft with both left blank, then say in one line why.
+Comments or approvals from other people on the PR are context for the facts only.
+Do not cite them in the checkpoint notes or name their authors as reviewers.
 Set `predicate_type` to `https://kanopi.github.io/delivery-record/spec/v1`, exactly as the template shows.
 
 ### 3. Write the file
@@ -68,6 +70,19 @@ Set `predicate_type` to `https://kanopi.github.io/delivery-record/spec/v1`, exac
 Use the same paths as `delivery-record` step 5.
 For code: `docs/delivery-records/PR-<n>-<slug>.md`.
 The path is part of the contract, so never write the record anywhere else.
+
+If a file already exists at that path, read it before writing and handle it by its state.
+Whether it is committed does not matter:
+
+- **Unsigned** (`Status: awaiting review` is present, or `sign_off.reviewed_by` is `""`): it is an earlier draft.
+  Revise it in place at the same path.
+  Update the facts, checks, and body from the current work, and keep the placeholder checkpoint notes.
+  Do not delete it and do not create a second file with another slug.
+- **Signed** (`sign_off.reviewed_by` has a name and no `Status:` line): do not edit it, and do not write a new file.
+  Stop and tell the user the path holds a signed record.
+  A changed signed record needs a new review, so the user decides how to proceed.
+
+An existing file is never a reason to use a different path.
 
 ### 4. Report
 
@@ -86,6 +101,8 @@ If the verifier reports any other failure, fix the record and re-run.
 - "I'll put the PR approver in `reviewed_by` so the record is complete" (CANT-19: an approval click is not a checkpoint note)
 - "I'll pre-fill the checkpoint notes from the PR description so the reviewer only has to confirm" (CANT-12: the notes are the reviewer's words)
 - "The user wants it to pass CI now, so I'll mark it signed" (CANT-10: a failing verifier on a draft is correct)
+- "A record already exists at the canonical path, so I'll use a new slug" (revise an unsigned draft in place, stop on a signed one)
+- "A teammate commented on the PR, so I'll work their review into the notes" (the notes are blank until finalize)
 - "I'll commit the draft so they don't have to" (the commit is opt-in)
 
 ## Related skills

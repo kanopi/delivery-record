@@ -62,7 +62,9 @@ Re-prompt up to twice with a short reason for the refusal.
 On the third blank or generic answer, abort, leave the draft unchanged, and say so.
 
 The notes must come from the user in this conversation.
-A `--reviewer` flag, a PR approval, or a verbal review the user describes without details does not count.
+A `--reviewer` flag, a PR approval, a PR comment from someone else, or a verbal review the user describes without details does not count.
+If you found a PR comment that looks like review evidence, offer it as an option in the question set.
+The reviewer decides whether to cite it and states it in their own words.
 
 ### 4. Write the signature
 
@@ -97,6 +99,7 @@ Otherwise print the file path, the verifier result, and the commit commands the 
 - "They are the author, so they can be the reviewer and I'll write the notes for them" (CANT-12: the notes are the reviewer's words)
 - "The user said the review happened, so the notes are optional" (CANT-19: the notes are the record)
 - "It is the user's own record, I'll accept 'LGTM' once" (CANT-12)
+- "A teammate's PR comment is a review, so I'll write it into the notes" (CANT-12: only the reviewer's own words count)
 - "The record is signed, no need to run --strict" (CANT-10)
 - "I'll commit and push the sign-off so they don't have to" (the git step is the user's)
 

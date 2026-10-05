@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `delivery-record-draft` now handles a file already at the canonical path: an unsigned draft is revised in place, a signed record stops the run, and a different slug is never used.
+  Draft and finalize also treat PR comments from other people as context only, never as checkpoint notes.
+
 - `delivery-record` checkpoint prompts now ask plain questions with a
   reason for each, no longer say "automated gates" or "final code
   approval", and list the six `scope` values with meanings. Scope is
