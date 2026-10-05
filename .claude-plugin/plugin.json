@@ -1,6 +1,6 @@
 {
   "name": "delivery-record",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Schema-typed, human-signed Delivery Records for AI-assisted work. Generate a record for any significant output (code PR, FRD, audit, discovery, design handoff, strategy, client comms, QA, launch, deployment, devops, project setup, ongoing improvement) with a mandatory named-reviewer checkpoint, then verify records against the bundled JSON Schema spec with the threshold rule (fail needs a waiver, n/a needs a justification).",
   "author": {
     "name": "Kanopi Studios",
