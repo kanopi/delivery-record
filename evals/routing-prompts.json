@@ -44,6 +44,18 @@
     {
       "prompt": "sign the drafted delivery record with the reviewer name and checkpoint notes",
       "expect": "delivery-record-finalize"
+    },
+    {
+      "prompt": "start an evidence log for this task so we have a running record of decisions and checks while I work",
+      "expect": "delivery-record-log"
+    },
+    {
+      "prompt": "add the plan question and my answer to the evidence log for this branch",
+      "expect": "delivery-record-log"
+    },
+    {
+      "prompt": "this turned into a bigger change, backfill the evidence log with what we have done so far",
+      "expect": "delivery-record-log"
     }
   ]
 }

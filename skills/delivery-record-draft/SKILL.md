@@ -36,6 +36,11 @@ There is no `--reviewer` flag: a draft never names a reviewer.
 ### 1. Detect and gather
 
 Follow steps 1 and 2 of [`delivery-record`](../delivery-record/SKILL.md): detect the environment and activity type, then gather the facts the activity needs.
+That includes reading the evidence log for the current repo and branch, if one exists (see [`delivery-record-log`](../delivery-record-log/SKILL.md)).
+Use its decisions, findings, and checks, and treat a check as run only when the log has a `[check-run]` entry for it.
+Never take a reviewer or a checkpoint note from the log.
+Never delete the log: a draft is unsigned, and the log is deleted only after a signed record is written.
+
 Scope is optional.
 If the user did not give one, leave `scope` out of the front matter instead of asking.
 
@@ -104,9 +109,11 @@ If the verifier reports any other failure, fix the record and re-run.
 - "A record already exists at the canonical path, so I'll use a new slug" (revise an unsigned draft in place, stop on a signed one)
 - "A teammate commented on the PR, so I'll work their review into the notes" (the notes are blank until finalize)
 - "I'll commit the draft so they don't have to" (the commit is opt-in)
+- "The draft is written, so the evidence log can go" (keep it until a signed record is written)
 
 ## Related skills
 
+- **delivery-record-log**: keep the evidence log this skill reads in step 1.
 - **delivery-record-finalize**: add the reviewer and checkpoint notes to a draft.
 - **delivery-record**: write a signed record in one step when the review is done.
 - **delivery-record-verify**: validate a record against the schema.
