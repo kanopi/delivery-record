@@ -33,3 +33,13 @@ verification until finalized.
 Sign a drafted Delivery Record after review. Refuses to write without a
 named reviewer and both checkpoint notes, edits only the sign-off and
 checkpoint sections, and validates the result with `--strict`.
+
+### 5. delivery-record-log
+
+Keep an evidence log: a timestamped, running record of a task kept while
+the work happens, at `~/.claude/delivery-records/logs/<repo>/<branch>.md`
+outside the working tree. Records the request, plan questions and answers,
+in-flight plan changes, decisions, findings, and checks run or not run.
+Never names a reviewer. `delivery-record` and `delivery-record-draft` read
+it when gathering facts; it is deleted only after a signed record is
+written.

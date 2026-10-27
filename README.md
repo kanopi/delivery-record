@@ -3,7 +3,7 @@
 A **Delivery Record** is a schema-typed, human-signed markdown file that
 documents one significant AI-assisted output — what was produced, what checks
 ran, and **which named human reviewed it and what they actually verified**.
-This repo ships the spec and two Agent Skills that write and verify records.
+This repo ships the spec and the Agent Skills that keep evidence for, write, and verify records.
 The spec is browsable at <https://kanopi.github.io/delivery-record/spec/v1>.
 
 AI can draft almost anything; accountability can't be delegated to it. The
@@ -29,6 +29,12 @@ to exist without a named reviewer and two non-generic checkpoint notes.
 - **`skills/delivery-record-finalize/`** — signs a draft after a human has
   reviewed the work. Refuses without a named reviewer and two specific
   checkpoint notes.
+- **`skills/delivery-record-log/`** — keeps an evidence log while the work
+  happens: a timestamped running record of the request, plan questions and
+  answers, decisions, findings, and checks, at
+  `~/.claude/delivery-records/logs/<repo>/<branch>.md` outside the working
+  tree. The writing skills read it when gathering facts. It never names a
+  reviewer.
 - **`skills/delivery-record-verify/`** — the read-only verification skill.
 - **`scripts/delivery_record_verify.py`** — the validator both skills and CI
   use: resolves the schema version from `predicate_type`, validates the
@@ -59,6 +65,7 @@ the latest GitHub release and upload via Settings.
 
 ```
 /delivery-record [--activity-type <type>] [--pr <n>] [--ticket <key>] [--reviewer <handle>]
+/delivery-record-log [start|append|backfill] [<entry text>]
 /delivery-record-draft [--activity-type <type>] [--pr <n>] [--ticket <key>]
 /delivery-record-finalize [path] [--reviewer <handle>]
 /delivery-record-verify [path] [--strict]
@@ -66,6 +73,7 @@ the latest GitHub release and upload via Settings.
 
 Use `/delivery-record` when the review has already happened.
 Use `/delivery-record-draft` when it has not, then `/delivery-record-finalize` after the reviewer signs off.
+Start `/delivery-record-log` early in a task that will need a record; the other skills read it and delete it once a signed record is written.
 
 Or conversationally: "create a delivery record for this PR", "validate all
 the delivery records".

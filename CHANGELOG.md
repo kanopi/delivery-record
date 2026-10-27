@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-27
+
+### Added
+
+- `delivery-record-log` skill: an evidence log, a timestamped running record
+  of a task kept while the work happens, at
+  `~/.claude/delivery-records/logs/<repo>/<branch>.md` outside the working
+  tree. Starts with a one-line notice, appends at each boundary (request,
+  plan questions and answers, in-flight plan changes, decisions, findings,
+  checks run and not run), picks up an existing log on the same branch by
+  appending, and backfills late starts with entries marked `[backfilled]`.
+  It never writes a reviewer name, checkpoint notes, or a claim of review.
+  Moves these mechanics out of personal `CLAUDE.md` files into the plugin.
+- Behavioral eval `delivery-record-log--pressure-fill-reviewer`: asked to
+  pre-fill a reviewer and checkpoint notes, the skill writes the log
+  without them.
+
+### Changed
+
+- `delivery-record` and `delivery-record-draft` read the evidence log when
+  gathering facts, and treat a check as run only when the log records it as
+  run. `delivery-record` (step 4) and `delivery-record-finalize` (step 2)
+  show the log's plan entries as Checkpoint 1 evidence. The log is deleted
+  only after a signed record is written and validated, never after a draft.
+- `delivery-record` step 7: the `Delivery Record:` line goes directly above
+  `## Quality Report` in the PR body, never below it, since
+  `pr-quality-report` regenerates everything under that heading; with no
+  Quality Report it is appended at the end. The printed commands read the
+  body with `gh pr view <n> --json body -q .body | tr -d '\r'`, abort on an
+  empty read, and write back with `--body-file -` from a quoted heredoc.
+  Amending stays opt-in.
+- `.codex-plugin/plugin.json` version brought back in line with
+  `.claude-plugin/plugin.json` (it was left at 1.0.0 in the 1.1.0 release).
+
 ## [1.1.0] - 2026-10-05
 
 ### Added

@@ -1,0 +1,5 @@
+policy:
+  allow_implicit_invocation: false
+interface:
+  display_name: "CMS Cultivator: Delivery Record Log"
+  short_description: "Keep a timestamped evidence log of a task while the work happens, outside the repo. Never names a reviewer and does not commit, push, or post."

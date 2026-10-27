@@ -18,6 +18,7 @@ The refusal is the feature.
 ## Side effects
 
 This skill edits one existing file: the draft at the path given.
+After a successful sign-off it also deletes the task's evidence log, if one exists.
 It does not create a commit, push, amend the PR description, or post to Teamwork unless the user asks for that step.
 Commit and push are the user's to run.
 If the user wants a single sign-off commit, print the exact `git add` and `git commit` commands and stop.
@@ -41,6 +42,11 @@ Stop if `predicate_type` is missing, or if the file has no `Status: awaiting rev
 In that case the record is already signed: say so, and do not overwrite a signature.
 
 ### 2. Ask the checkpoint questions
+
+First look for the evidence log for this repo and the record's branch: `~/.claude/delivery-records/logs/<repo>/<branch>.md`, resolved as in [`delivery-record-log`](../delivery-record-log/SKILL.md).
+For a code record, take the branch from the PR (`gh pr view <n> --json headRefName`), falling back to the current branch.
+If the log exists, show its `[plan-q]`, `[plan-a]`, and `[plan-change]` entries verbatim as evidence for Checkpoint 1.
+The reviewer decides whether to cite them, in their own words.
 
 Ask in plain words, with the reason for each, in one question set:
 
@@ -85,6 +91,9 @@ Report the output.
 Never report the record as signed without validator output.
 If validation fails, fix the cause or restore the draft, and say which.
 
+Once `--strict` passes, delete the evidence log from step 2, if there was one, and say so in one line.
+Never delete it when validation failed or the run aborted.
+
 ### 6. Optional steps
 
 Run these only when the user asked for them:
@@ -115,6 +124,7 @@ Otherwise print the file path, the verifier result, and the commit commands the 
 
 ## Related skills
 
+- **delivery-record-log**: keep the evidence log shown in step 2.
 - **delivery-record-draft**: write the unsigned record this skill finalizes.
 - **delivery-record**: write a signed record in one step.
 - **delivery-record-verify**: validate a record against the schema.

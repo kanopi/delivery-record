@@ -31,6 +31,8 @@ and ran through Kanopi's workflow. The schema is canonical in this repo at
   (and, with your confirmation, creates that notebook if it is missing).
 - For code records, amends the open PR description with a link to the record,
   only when you ask for it (step 7).
+- Deletes the task's evidence log, if one exists, after the signed record is
+  written and validated (step 5).
 
 It never commits or pushes. Those stay with you.
 
@@ -78,7 +80,18 @@ or brainstorming.
 
 ### 2. Gather facts
 
-Pull what the chosen activity needs:
+First read the evidence log for this repo and branch, if one exists:
+`~/.claude/delivery-records/logs/<repo>/<branch>.md`, resolved as in
+[`delivery-record-log`](../delivery-record-log/SKILL.md). For a code record,
+take the branch from the PR (`gh pr view <n> --json headRefName`), falling
+back to the current branch. Use its `[decision]`, `[finding]`, `[deviation]`,
+and check entries as facts. Treat a check as run only when the log has a
+`[check-run]` entry for it; a `[check-not-run]` entry or no entry means it
+did not run. Keep its `[plan-q]`, `[plan-a]`, and `[plan-change]` entries
+for step 4. The log
+never supplies the reviewer or the checkpoint notes.
+
+Then pull what the chosen activity needs:
 
 - **code**: `git log <base>..HEAD --oneline`, PR number/SHA/title from `gh pr view`,
   CI status (`gh pr checks` or the CircleCI MCP), presence of audit report files in
@@ -140,7 +153,11 @@ Pull what the chosen activity needs:
 
 ### 4. Require the human checkpoint (the curl rule)
 
-Display the draft and ask, in plain words, with the reason for each:
+Display the draft. If step 2 found an evidence log, show its `[plan-q]`,
+`[plan-a]`, and `[plan-change]` entries verbatim as evidence for Checkpoint 1. The human decides
+whether to cite them, in their own words.
+
+Then ask, in plain words, with the reason for each:
 
 1. Who is the named reviewer? Give a handle or full name.
 2. Before the work started, who agreed to the approach, and what did they agree
@@ -182,6 +199,10 @@ Python is unavailable, an explicit line-by-line check against the template's
 front-matter shape). If validation fails, fix the record and re-validate —
 a schema-invalid record is not a delivery record.
 
+Once the signed record is written and validates, delete the evidence log from
+step 2, if there was one, and say so in one line. Never delete it when the
+write or validation failed.
+
 ### 6. Index in Teamwork
 
 - Use `teamwork-integrator` to find the project's **"Delivery Records"** notebook.
@@ -200,10 +221,33 @@ a schema-invalid record is not a delivery record.
 ### 7. For code records: link from the PR
 
 Only when the user asks, amend the PR description with a trailer so reviewers
-can find the record. Otherwise print the line and the `gh pr edit` command:
+can find the record. Otherwise print the line and the `gh pr edit` commands:
 
 ```
 Delivery Record: docs/delivery-records/PR-<n>-<slug>.md
+```
+
+**Placement.** Put the line directly above the `## Quality Report` heading,
+with a blank line on each side. Never put it below that heading:
+`pr-quality-report` regenerates everything below it, and only an org
+attribution line may follow the report. If the body has no Quality Report,
+append the line at the end.
+
+**Commands.** Read the current body first, and abort if the read comes back
+empty, so a failed read never blanks the description:
+
+```bash
+body=$(gh pr view <n> --json body -q .body | tr -d '\r')
+[ -n "$body" ] || { echo "Could not read the PR body; not editing it." >&2; exit 1; }
+```
+
+Build the new body from that text with the line inserted, then write it back
+from a quoted heredoc so nothing in it is expanded:
+
+```bash
+gh pr edit <n> --body-file - <<'EOF'
+<the full new body>
+EOF
 ```
 
 ## Validation reference
@@ -232,6 +276,8 @@ CANT IDs reference the [Catalog of Agent Neutralization Techniques](https://gith
 - "LGTM is close enough for a checkpoint note" (CANT-12)
 - "They said the review happened verbally, so the notes requirement is satisfied" (CANT-19 — the notes are the record; verbal review isn't written evidence)
 - "The record is written, no need to run the validator" (CANT-10)
+- "The evidence log says the tests were planned, so I'll mark them `pass`" (CANT-10 — only a `[check-run]` entry counts as run)
+- "The draft is written, so I can delete the evidence log" (the log goes only after a signed record validates)
 
 ## Anti-rationalization table
 
@@ -249,6 +295,7 @@ temptation is to weaken it — don't:
 
 ## Related skills
 
+- **delivery-record-log** — keep the evidence log this skill reads in step 2.
 - **delivery-record-draft** — write an unsigned record before review.
 - **delivery-record-finalize** — sign a draft after review.
 - **delivery-record-verify** — validate a record against the schema and the
