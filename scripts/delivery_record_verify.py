@@ -12,19 +12,26 @@ Usage:
 With no PATH, auto-detects ``docs/delivery-records/*.md`` under the current
 working directory.
 
+Missing dependencies (PyYAML, jsonschema) are installed with pip on first run:
+into the active virtualenv if there is one, otherwise with ``--user``.
+
 Exit codes:
     0  all records valid (warnings allowed unless --strict)
     1  one or more records failed hard validation (or a warning under --strict)
-    2  usage / environment error (e.g. missing dependency, unreadable spec)
+    2  usage / environment error (e.g. dependency install failed, unreadable spec)
 """
 
 from __future__ import annotations
 
 import argparse
 import glob
+import importlib
+import importlib.util
 import json
 import os
 import re
+import site
+import subprocess
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -50,14 +57,50 @@ def _fail(message: str, code: int = 2) -> "NoReturn":  # type: ignore[name-defin
     sys.exit(code)
 
 
+# Import name -> pip package name.
+REQUIRED_PACKAGES = {"yaml": "pyyaml", "jsonschema": "jsonschema"}
+
+
+def _missing_deps():
+    return [
+        package
+        for module, package in REQUIRED_PACKAGES.items()
+        if importlib.util.find_spec(module) is None
+    ]
+
+
 def _require_deps():
+    missing = _missing_deps()
+    if not missing:
+        return
+
+    in_virtualenv = sys.prefix != sys.base_prefix
+    cmd = [sys.executable, "-m", "pip", "install", "--quiet"]
+    if not in_virtualenv:
+        cmd.append("--user")
+    cmd += missing
+    manual = " ".join(cmd)
+
+    # stderr only, so --json output on stdout stays parseable.
+    print(f"installing missing Python dependencies: {' '.join(missing)}", file=sys.stderr)
     try:
-        import yaml  # noqa: F401
-        import jsonschema  # noqa: F401
-    except ImportError as exc:  # pragma: no cover - environment dependent
+        proc = subprocess.run(cmd, stdout=sys.stderr)
+    except OSError as exc:
+        _fail(f"could not run pip ({exc}). Install manually with: {manual}")
+    if proc.returncode != 0:
+        _fail(f"pip could not install {' '.join(missing)}. Install manually with: {manual}")
+
+    # A user site-packages directory created by this install is not on
+    # sys.path yet, because site only adds it at interpreter start-up.
+    if not in_virtualenv:
+        site.addsitedir(site.getusersitepackages())
+    importlib.invalidate_caches()
+
+    still_missing = _missing_deps()
+    if still_missing:
         _fail(
-            f"missing Python dependency: {exc.name}. "
-            "Install with: pip install pyyaml jsonschema"
+            f"installed {' '.join(missing)} but cannot import {' '.join(still_missing)}. "
+            f"Re-run, or install manually with: {manual}"
         )
 
 
