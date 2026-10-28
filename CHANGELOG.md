@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   stderr so `--json` stays parseable. If pip fails, it exits 2 with the
   exact command to run by hand.
 
+### Security
+
+- The verifier runs pip in isolated mode (`-I`) from its own directory, so
+  a `pip.py` or `pip/` in the directory it is run from (a client repo, in
+  CI) cannot be imported in place of pip.
+
 ## [1.2.0] - 2026-10-27
 
 ### Added
