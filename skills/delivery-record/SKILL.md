@@ -87,8 +87,8 @@ take the branch from the PR (`gh pr view <n> --json headRefName`), falling
 back to the current branch. Use its `[decision]`, `[finding]`, `[deviation]`,
 and check entries as facts. Treat a check as run only when the log has a
 `[check-run]` entry for it; a `[check-not-run]` entry or no entry means it
-did not run. Keep its `[plan-q]`, `[plan-a]`, and `[plan-change]` entries
-for step 4. The log
+did not run. Keep its `[plan-q]`, `[plan-a]`, `[plan-change]`, and
+`[plan-approved]` entries for step 4. The log
 never supplies the reviewer or the checkpoint notes.
 
 Then pull what the chosen activity needs:
@@ -154,7 +154,9 @@ Then pull what the chosen activity needs:
 ### 4. Require the human checkpoint (the curl rule)
 
 Display the draft. If step 2 found an evidence log, show its `[plan-q]`,
-`[plan-a]`, and `[plan-change]` entries verbatim as evidence for Checkpoint 1. The human decides
+`[plan-a]`, `[plan-change]`, and `[plan-approved]` entries verbatim as
+evidence for Checkpoint 1. A plan approved in plan mode is evidence for that
+checkpoint, not its note. The human decides
 whether to cite them, in their own words.
 
 Then ask, in plain words, with the reason for each:

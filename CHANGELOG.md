@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `delivery-record-log` logs the plan approved on leaving plan mode as a
+  `[plan-approved]` entry: one line quoting the user's approval and naming
+  the plan file, followed by the plan verbatim. `delivery-record` (step 4)
+  and `delivery-record-finalize` (step 2) show it as Checkpoint 1 evidence.
+  It does not sign the checkpoint: the reviewer still writes the note.
+
 ### Changed
 
 - `scripts/delivery_record_verify.py` installs PyYAML and jsonschema with pip

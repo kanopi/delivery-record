@@ -45,7 +45,8 @@ In that case the record is already signed: say so, and do not overwrite a signat
 
 First look for the evidence log for this repo and the record's branch: `~/.claude/delivery-records/logs/<repo>/<branch>.md`, resolved as in [`delivery-record-log`](../delivery-record-log/SKILL.md).
 For a code record, take the branch from the PR (`gh pr view <n> --json headRefName`), falling back to the current branch.
-If the log exists, show its `[plan-q]`, `[plan-a]`, and `[plan-change]` entries verbatim as evidence for Checkpoint 1.
+If the log exists, show its `[plan-q]`, `[plan-a]`, `[plan-change]`, and `[plan-approved]` entries verbatim as evidence for Checkpoint 1.
+A plan approved in plan mode is evidence for that checkpoint, not its note.
 The reviewer decides whether to cite them, in their own words.
 
 Ask in plain words, with the reason for each, in one question set:
