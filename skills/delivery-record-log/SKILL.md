@@ -66,7 +66,7 @@ The file starts with one heading, then one line per entry:
 ```
 
 Timestamps are local time, `YYYY-MM-DDTHH:MM`.
-Each entry is one line and starts with exactly one of these tags:
+Each entry is one line, except `[plan-approved]`, and starts with exactly one of these tags:
 
 | Tag | What goes in it |
 |---|---|
@@ -74,6 +74,7 @@ Each entry is one line and starts with exactly one of these tags:
 | `[plan-q]` | A question about the plan, put to the user, verbatim. |
 | `[plan-a]` | The user's answer to it, verbatim, in quotes. Together these are the evidence for Checkpoint 1, plan approval. |
 | `[plan-change]` | A change the user makes while the plan is still in draft: a one-line summary of what changed, with the user's words in quotes. Also Checkpoint 1 evidence. |
+| `[plan-approved]` | The plan the user approved on leaving plan mode. The only entry with more than one line: see [Plan mode](#plan-mode). Also Checkpoint 1 evidence. |
 | `[decision]` | A decision, with the alternatives rejected and why. |
 | `[finding]` | Something learned that changes the facts of the work. |
 | `[deviation]` | A change from the agreed plan. |
@@ -82,6 +83,27 @@ Each entry is one line and starts with exactly one of these tags:
 
 The tags let `delivery-record` and `delivery-record-draft` pick out the plan approval and the checks that ran.
 Do not invent other tags.
+
+### Plan mode
+
+When the task starts in plan mode, the plan the user approves on leaving it is the plan approval for Checkpoint 1.
+Log it as one `[plan-approved]` line, followed by the plan exactly as approved in a fenced block indented under it:
+
+````markdown
+- 2026-10-27T14:12 [plan-approved] Approved on leaving plan mode: "yes, go ahead". Plan file: ~/.claude/plans/breadcrumb-block.md
+  ```markdown
+  <the approved plan, verbatim>
+  ```
+````
+
+- The line says where it was approved, and quotes the user's reply verbatim.
+  If they approved with a button and typed nothing, write `approved with no comment`.
+- Name the plan file when the plan was saved to one.
+- Copy the plan text as approved, not as later edited.
+  A change after approval is a `[deviation]`, and a new plan approved in plan mode is a new `[plan-approved]` entry.
+
+The entry is evidence, not a signature.
+Approving a plan does not sign Checkpoint 1: the reviewer still writes that note in `delivery-record` or `delivery-record-finalize`, in their own words.
 
 ## Workflow
 
@@ -105,6 +127,7 @@ The one-line notice is the user's chance to say no.
 Append one entry at each boundary, not at every tool call:
 
 - the request, and each plan question with the user's answer
+- the plan approved on leaving plan mode, as a `[plan-approved]` entry
 - each change the user makes to the plan while it is still in draft, summarized as a `[plan-change]` entry; a change after the plan was approved is a `[deviation]`
 - each decision, with the alternatives rejected
 - findings, and deviations from the plan
@@ -126,6 +149,7 @@ Mark each of those entries `[backfilled]` right after the tag:
 Use the original time when the conversation shows it, otherwise the time of the backfill.
 Backfill only what the conversation shows.
 Do not log a check as run unless its output is in the conversation.
+If the task began in plan mode, backfill the approved plan as a `[plan-approved]` entry, verbatim from the conversation or the plan file.
 
 ### 4. Discard or decline
 
@@ -138,7 +162,7 @@ If the user declines anyway, keep working, and note under the PR's Assumptions t
 ### 5. Hand off
 
 Once the PR exists, `delivery-record` or `delivery-record-draft` reads the log while gathering facts.
-`delivery-record` and `delivery-record-finalize` show the `[plan-q]`, `[plan-a]`, and `[plan-change]` entries to the human as Checkpoint 1 evidence.
+`delivery-record` and `delivery-record-finalize` show the `[plan-q]`, `[plan-a]`, `[plan-change]`, and `[plan-approved]` entries to the human as Checkpoint 1 evidence.
 The log is deleted only after a signed record is written, never after an unsigned draft.
 
 ## What never goes in the log
@@ -155,6 +179,8 @@ Write the log without them, then tell the user in one line: "The log never names
 - "The user named the reviewer, so I'll note them in the log to save time later" (CANT-19: a reviewer name is a signature, and only the human writes it)
 - "I'll jot down a draft checkpoint note so finalize has something to start from" (CANT-12: the notes are the reviewer's words)
 - "The user approved the plan, so I'll log it as reviewed" (approval of the plan is a `[plan-a]` entry in their words, not a claim of review)
+- "The plan was approved in plan mode, so Checkpoint 1 is signed" (CANT-19: `[plan-approved]` is evidence; the reviewer still writes the note)
+- "The plan is long, I'll summarize it" (`[plan-approved]` holds the plan verbatim, as approved)
 - "The tests will pass, I'll log them as run now" (CANT-10: only checks whose output came back are `[check-run]`)
 - "I ran the linter earlier in my head, it's fine" (a check that did not run is `[check-not-run]`)
 - "There's an old log for this branch, I'll start a fresh one" (append; never overwrite)
