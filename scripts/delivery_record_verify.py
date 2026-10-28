@@ -75,7 +75,9 @@ def _require_deps():
         return
 
     in_virtualenv = sys.prefix != sys.base_prefix
-    cmd = [sys.executable, "-m", "pip", "install", "--quiet"]
+    # -I and a fixed cwd: `-m pip` would otherwise import a pip.py or pip/
+    # from the directory the verifier was run in (a client repo, in CI).
+    cmd = [sys.executable, "-I", "-m", "pip", "install", "--quiet"]
     if not in_virtualenv:
         cmd.append("--user")
     cmd += missing
@@ -84,7 +86,7 @@ def _require_deps():
     # stderr only, so --json output on stdout stays parseable.
     print(f"installing missing Python dependencies: {' '.join(missing)}", file=sys.stderr)
     try:
-        proc = subprocess.run(cmd, stdout=sys.stderr)
+        proc = subprocess.run(cmd, stdout=sys.stderr, cwd=SCRIPT_DIR)
     except OSError as exc:
         _fail(f"could not run pip ({exc}). Install manually with: {manual}")
     if proc.returncode != 0:
