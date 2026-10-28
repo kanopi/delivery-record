@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `scripts/delivery_record_verify.py` installs PyYAML and jsonschema with pip
+  when they are missing, into the active virtualenv or with `--user`
+  otherwise, instead of exiting with an install hint. Pip output goes to
+  stderr so `--json` stays parseable. If pip fails, it exits 2 with the
+  exact command to run by hand.
+
 ## [1.2.0] - 2026-10-27
 
 ### Added
